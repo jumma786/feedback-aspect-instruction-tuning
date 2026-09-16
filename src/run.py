@@ -15,7 +15,7 @@ from __future__ import annotations
 import argparse
 import json
 import platform
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 ARTIFACTS = Path(__file__).resolve().parent.parent / "artifacts"
@@ -89,7 +89,7 @@ def main() -> None:
         "corpus": stats,
         "eval_reviews": len(test_set),
         "environment": _environment(),
-        "started_utc": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        "started_utc": datetime.now(UTC).isoformat(timespec="seconds"),
     }
 
     model, tokenizer = build_model(cfg)
@@ -144,10 +144,10 @@ def main() -> None:
             tokenizer.save_pretrained(ADAPTER_DIR)
             print(f"adapter saved to {ADAPTER_DIR}", flush=True)
 
-    record["finished_utc"] = datetime.now(timezone.utc).isoformat(timespec="seconds")
+    record["finished_utc"] = datetime.now(UTC).isoformat(timespec="seconds")
 
     ARTIFACTS.mkdir(parents=True, exist_ok=True)
-    stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+    stamp = datetime.now(UTC).strftime("%Y%m%dT%H%M%SZ")
     suffix = f"-{args.tag}" if args.tag else ""
     out = ARTIFACTS / f"absa{suffix}-{stamp}.json"
     out.write_text(json.dumps(record, indent=2), encoding="utf-8")

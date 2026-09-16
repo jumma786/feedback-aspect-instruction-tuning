@@ -61,7 +61,8 @@ def generate_batch(
             )
 
             if verbose and (start // batch_size) % 10 == 0:
-                print(f"  generated {min(start + batch_size, len(examples))}/{len(examples)}", flush=True)
+                done = min(start + batch_size, len(examples))
+                print(f"  generated {done}/{len(examples)}", flush=True)
     finally:
         tokenizer.padding_side = original_side
 

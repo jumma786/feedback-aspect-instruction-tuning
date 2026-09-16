@@ -57,7 +57,10 @@ class TestParsing:
         assert strict is True
 
     def test_malformed_items_are_skipped(self):
-        raw = '{"aspects": [{"term": "staff", "sentiment": "negative"}, "junk", {"sentiment": "x"}]}'
+        raw = (
+            '{"aspects": [{"term": "staff", "sentiment": "negative"}, '
+            '"junk", {"sentiment": "x"}]}'
+        )
         aspects, strict, _ = parse_prediction(raw)
         assert aspects == [("staff", "negative")]
         assert strict is True
